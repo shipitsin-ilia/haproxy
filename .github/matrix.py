@@ -114,7 +114,7 @@ for CC in ["gcc", "clang"]:
         "LIBRESSL_VERSION=2.9.2",
         "LIBRESSL_VERSION=3.3.3",
         "QUICTLS=yes",
-#        "BORINGSSL=yes",
+        "BORINGSSL=yes",
     ]:
         flags = ["USE_OPENSSL=1"]
         if ssl == "BORINGSSL=yes" or ssl == "QUICTLS=yes":
