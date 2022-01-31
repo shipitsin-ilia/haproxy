@@ -2506,10 +2506,10 @@ int ssl_sock_switchctx_cbk(SSL *ssl, int *al, void *arg)
 #ifdef OPENSSL_IS_BORINGSSL
 		if (!SSL_early_callback_ctx_extension_get(ctx, qc->tps_tls_ext,
 		                                          &extension_data, &extension_len))
+		goto abort;
 #else
 		if (!SSL_client_hello_get0_ext(ssl, qc->tps_tls_ext,
 		                               &extension_data, &extension_len))
-#endif
 		{
 			/* This is not redundant. It we only return 0 without setting
 			 * <*al>, this has as side effect to generate another TLS alert
@@ -2519,6 +2519,7 @@ int ssl_sock_switchctx_cbk(SSL *ssl, int *al, void *arg)
 			quic_set_tls_alert(qc, SSL_AD_MISSING_EXTENSION);
 			return 0;
 		}
+#endif
 
 		if (!quic_transport_params_store(qc, 0, extension_data,
 		                                 extension_data + extension_len))
