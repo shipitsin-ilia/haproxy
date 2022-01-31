@@ -4153,9 +4153,11 @@ int qc_conn_alloc_ssl_ctx(struct quic_conn *qc)
 		        goto err;
 		}
 
+#ifndef OPENSSL_IS_BORINGSSL
 		/* Enabling 0-RTT */
 		if (bc->ssl_conf.early_data)
 			SSL_set_quic_early_data_enabled(ctx->ssl, 1);
+#endif
 
 		SSL_set_accept_state(ctx->ssl);
 	}
