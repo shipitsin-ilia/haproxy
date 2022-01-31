@@ -856,7 +856,7 @@ int ha_set_rsec(SSL *ssl, enum ssl_encryption_level_t level,
 	tls_ctx->rx.md = tls_md(cipher);
 	tls_ctx->rx.hp = tls_hp(cipher);
 
-	if (!(ctx->rx.key = pool_alloc(pool_head_quic_tls_key)))
+	if (!(tls_ctx->rx.key = pool_alloc(pool_head_quic_tls_key)))
 		goto err;
 
 	if (!quic_tls_derive_keys(tls_ctx->rx.aead, tls_ctx->rx.hp, tls_ctx->rx.md,
@@ -908,7 +908,7 @@ int ha_set_wsec(SSL *ssl, enum ssl_encryption_level_t level,
 		goto out;
 	}
 
-	if (!(ctx->tx.key = pool_alloc(pool_head_quic_tls_key)))
+	if (!(tls_ctx->tx.key = pool_alloc(pool_head_quic_tls_key)))
 		goto err;
 
 	tls_ctx->tx.aead = tls_aead(cipher);
