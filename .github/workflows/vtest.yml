@@ -79,7 +79,8 @@ jobs:
           libpcre2-dev \
           libsystemd-dev \
           ninja-build \
-          socat
+          socat \
+          valgrind
     - name: Install brew dependencies
       if: ${{ startsWith(matrix.os, 'macos-') }}
       run: |
@@ -125,9 +126,14 @@ jobs:
         echo "::endgroup::"
         haproxy -vv
         echo "::set-output name=version::$(haproxy -v |awk 'NR==1{print $3}')"
+        echo "::set-output name=haproxy_built_with::$(haproxy -vv | grep compiler)"
     - name: Install problem matcher for VTest
       # This allows one to more easily see which tests fail.
       run: echo "::add-matcher::.github/vtest.json"
+    - name: valgrind smoke testing
+      if: ${{ startsWith(matrix.os, 'ubuntu-') && !contains(steps.show-version.outputs.haproxy_built_with, 'sanitizer') }}
+      run: |
+        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./haproxy -cc 'version_atleast(2.5)'
     - name: Run VTest for HAProxy ${{ steps.show-version.outputs.version }}
       id: vtest
       run: |
