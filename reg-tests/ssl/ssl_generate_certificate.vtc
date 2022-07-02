@@ -27,8 +27,8 @@ server s1 -repeat 6 {
 
 haproxy h1 -conf {
     global
-        tune.ssl.default-dh-param 2048
-        tune.ssl.capture-buffer-size 2048
+        tune.ssl.default-dh-param 4096
+        tune.ssl.capture-buffer-size 4096
 
     defaults
         mode http
