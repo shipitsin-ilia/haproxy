@@ -85,6 +85,12 @@ jobs:
       run: |
         brew install socat
         brew install lua
+        
+    - name: show openssl.cnf
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      run: |
+        cat /etc/ssl/openssl.cnf
+        
     - name: Install VTest
       run: |
         scripts/build-vtest.sh
