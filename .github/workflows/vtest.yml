@@ -50,7 +50,7 @@ jobs:
 #
 # Github Action cache key cannot contain comma, so we calculate it based on job name
 #
-    - name: Generate cache key
+    - name: Generate cache key ${{ runner.os }}
       id: generate-cache-key
       run: |
         echo "key=$(echo ${{ matrix.name }} | sha256sum | awk '{print $1}')" >> $GITHUB_OUTPUT
